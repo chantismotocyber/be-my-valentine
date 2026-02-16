@@ -1,0 +1,165 @@
+<!DOCTYPE html>.
+<script>if(!localStorage.getItem('user_joined')){window.location.href='signup.html'}</script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Be my valentine</title>
+    <style>
+        :root { --sat: env(safe-area-inset-top); --sab: env(safe-area-inset-bottom); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fff; margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        .header { background: #d32f2f; padding-top: calc(10px + var(--sat)); padding-left: 15px; padding-right: 15px; padding-bottom: 12px; display: flex; align-items: center; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.15); z-index: 100; }
+        .back-btn { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .avatar-small { width: 40px; height: 40px; border-radius: 50%; margin-right: 12px; border: 1px solid #fff; object-fit: cover; }
+        .info { flex: 1; }
+        .name-txt { font-weight: bold; font-size: 17px; display: block; }
+        .status-txt { font-size: 12px; opacity: 0.9; }
+        .call-btn { font-size: 22px; margin-left: 18px; cursor: pointer; }
+        .screen { display: none; height: 100%; flex-direction: column; position: absolute; top: 0; left: 0; width: 100%; }
+        #screen-home { display: flex; }
+        .inbox-list { overflow-y: auto; flex: 1; background: #fff; }
+        .item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .item-img { width: 55px; height: 55px; border-radius: 50%; margin-right: 15px; object-fit: cover; }
+        .item-name { font-weight: bold; color: #333; font-size: 16px; }
+        .item-last { color: #666; font-size: 14px; }
+        #chat-box { flex: 1; background: #fce4ec; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; padding-bottom: 80px; }
+        .msg { padding: 10px 14px; margin: 6px 0; border-radius: 12px; max-width: 80%; font-size: 15px; box-shadow: 0 1px 1px rgba(0,0,0,0.1); position: relative; }
+        .rcvd { background: white; align-self: flex-start; border-top-left-radius: 0; }
+        .sent { background: #ffcdd2; align-self: flex-end; border-top-right-radius: 0; }
+        .meta { font-size: 10px; color: #999; text-align: right; margin-top: 4px; }
+        .secure-banner { background: #fff9c4; color: #5c5c5c; font-size: 11px; text-align: center; padding: 10px; margin: 10px auto; border-radius: 8px; width: 90%; align-self: center; border: 1px solid #e6db9b; }
+        .footer { background: #f5f5f5; padding: 10px; display: flex; align-items: center; position: fixed; bottom: 0; width: 100%; padding-bottom: calc(10px + var(--sab)); }
+        #input-box { flex: 1; padding: 12px 18px; border: none; border-radius: 25px; font-size: 16px; outline: none; background: #fff; }
+        .action-circle { background: #d32f2f; color: white; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-left: 8px; cursor: pointer; }
+        #screen-call { background: #1a0909; align-items: center; justify-content: center; color: white; z-index: 1000; }
+        .call-avatar { width: 140px; height: 140px; border-radius: 50%; border: 3px solid white; margin-bottom: 20px; animation: ring 2s infinite; }
+        @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); } 70% { box-shadow: 0 0 0 30px rgba(211, 47, 47, 0); } 100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); } }
+        .hangup { background: #ff3b30; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer; margin-top: 100px; transform: rotate(135deg); }
+        .thumb { width: 220px; border-radius: 12px; cursor: pointer; display: block; }
+        .expiry { color: #d32f2f; font-size: 10px; font-weight: bold; margin-top: 5px; display: block; }
+    </style>
+</head>
+<body>
+    <div id="screen-home" class="screen">
+        <div class="header" style="height: 60px; padding-top: 10px;">
+            <div style="flex:1; font-weight:bold; font-size:22px;">Be my valentine</div>
+            <div style="font-size: 20px;">🔍 &nbsp; ⋮</div>
+            <div id="user-welcome" style="color: white; font-size: 14px; margin-top: 5px; opacity: 0.9;"></div>
+
+        </div>
+        <div id="inbox" class="inbox-list"></div>
+    </div>
+    <div id="screen-chat" class="screen">
+        <div class="header">
+            <div class="back-btn" onclick="goHome()">←</div>
+            <img id="chat-img" class="avatar-small" src="">
+            <div class="info">
+                <div id="chat-name" class="name-txt"></div>
+                <div class="status-txt">Online</div>
+            </div>
+            <div class="call-btn" onclick="openCall('Video')">🎥</div>
+            <div class="call-btn" onclick="openCall('Voice')">📞</div>
+        </div>
+        <div id="chat-box"></div>
+        <div class="footer">
+            <div style="font-size:26px; margin-right:10px; cursor:pointer;">📷</div>
+            <input type="text" id="input-box" placeholder="Message" oninput="toggleIcon()">
+            <div id="main-btn" class="action-circle" onclick="doAction()">🎙️</div>
+        </div>
+    </div>
+    <div id="screen-call" class="screen">
+        <img id="c-img" class="call-avatar" src="">
+        <h2 id="c-name"></h2>
+        <script>
+// This looks for the nickname you saved in signup.html
+const userNick = localStorage.getItem('user_nickname');
+if(userNick) {
+    document.getElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
+}
+</script>
+<p id="c-type" style="color:#ff8a80; font-size:18px;"></p>
+        <div class="hangup" onclick="goChat()">📞</div>
+    </div>
+    <script>
+        var currentUser = null;
+        var listData = [
+            { id: 1, name: 'Sravya', img: 'https://randomuser.me/api/portraits/women/68.jpg', last: 'Namaskaram! Ela unnav?' },
+            { id: 2, name: 'Emily', img: 'https://randomuser.me/api/portraits/women/44.jpg', last: 'Hey there!' },
+            { id: 3, name: 'Karthik', img: 'https://randomuser.me/api/portraits/men/32.jpg', last: 'Match chustunnava bro?' }
+        ];
+        window.onload = function() {
+            var html = '';
+            for(var i=0; i<listData.length; i++) {
+                html += '<div class="item" onclick="startChat('+listData[i].id+')">' +
+                        '<img src="'+listData[i].img+'" class="item-img">' +
+                        '<div><div class="item-name">'+listData[i].name+'</div><div class="item-last">'+listData[i].last+'</div></div>' +
+                        '</div>';
+            }
+            document.getElementById('inbox').innerHTML = html;
+        };
+        function startChat(id) {
+            for(var i=0; i<listData.length; i++) { if(listData[i].id == id) currentUser = listData[i]; }
+            document.getElementById('chat-name').innerText = currentUser.name;
+            document.getElementById('chat-img').src = currentUser.img;
+            document.getElementById('chat-box').innerHTML = '<div class="secure-banner">🔒 Messages are end-to-end encrypted. Media auto-expires in 60m.</div>';
+            addMsg(currentUser.last, 'rcvd');
+            document.getElementById('screen-home').style.display = 'none';
+            document.getElementById('screen-chat').style.display = 'flex';
+        }
+        function goHome() { document.getElementById('screen-chat').style.display = 'none'; document.getElementById('screen-home').style.display = 'flex'; }
+        function toggleIcon() { var v = document.getElementById('input-box').value; document.getElementById('main-btn').innerText = v.trim() ? "➤" : "🎙️"; }
+        function doAction() {
+            var input = document.getElementById('input-box');
+            if(input.value.trim()) {
+                var txt = input.value;
+                addMsg(txt, 'sent');
+                input.value = '';
+                toggleIcon();
+                setTimeout(function() {
+                    var low = txt.toLowerCase();
+                    if(low.indexOf('pic') > -1 || low.indexOf('pampinchu') > -1) {
+                        sendMedia('img');
+                    } else {
+                        addMsg(currentUser.name == 'Sravya' ? 'Avuna? Nijame.' : 'I love that! ❤️', 'rcvd');
+                    }
+                }, 1000);
+            } else {
+                addMsg("🎤 Voice Note (0:05)", 'sent');
+                setTimeout(function(){ addMsg("Happy Valentine's Day! ❤️", 'rcvd'); }, 1500);
+            }
+        }
+        function addMsg(txt, type, isMedia) {
+            var box = document.getElementById('chat-box');
+            var d = document.createElement('div');
+            d.className = 'msg ' + type;
+            var time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            var content = txt;
+            if(isMedia) content += '<span class="expiry">⏳ Expires in 60m</span>';
+            d.innerHTML = content + '<div class="meta">'+time+' ✓✓</div>';
+            box.appendChild(d);
+            box.scrollTop = box.scrollHeight;
+            if(isMedia) { setTimeout(function(){ d.innerHTML = '<i style="color:gray; font-size:13px;">🚫 Media Expired</i>'; }, 10000); }
+        }
+        function openCall(type) {
+            document.getElementById('screen-chat').style.display = 'none';
+            document.getElementById('screen-call').style.display = 'flex';
+            document.getElementById('c-img').src = currentUser.img;
+            document.getElementById('c-name').innerText = currentUser.name;
+            document.getElementById('c-type').innerText = type + ' calling...';
+        }
+        function goChat() { document.getElementById('screen-call').style.display = 'none'; document.getElementById('screen-chat').style.display = 'flex'; addMsg("📞 Missed call", 'sent'); }
+        function sendMedia(type) {
+            var src = "https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600";
+            addMsg('<img src="'+src+'" class="thumb">', 'rcvd', true);
+        }
+    </script>
+    <script>
+const userNick = localStorage.getItem('user_nickname');
+if(userNick) {
+    document.getElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
+}
+</script>
+
+</body>
+</html>

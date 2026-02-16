@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Be My Valentine</title>
+    <style>
+        body { font-family: sans-serif; background: #d32f2f; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; color: white; }
+        .card { background: white; color: #333; padding: 30px; border-radius: 20px; width: 85%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        h2 { color: #d32f2f; margin-bottom: 10px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; outline: none; }
+        .btn { background: #d32f2f; color: white; padding: 12px; border: none; border-radius: 25px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .link { font-size: 12px; color: #666; margin-top: 15px; display: block; text-decoration: none; }E
+    <script>
+function saveAndJoin() {
+    const nick = document.getElementById('nickname').value;
+    const gen = document.getElementById('gender').value;
+
+    if(nick && gen) {
+        // Saves user info to the phone's memory
+        localStorage.setItem('user_nickname', nick);
+        localStorage.setItem('user_gender', gen);
+        localStorage.setItem('user_joined', 'true');
+        
+        // Takes the user to the main chat screen
+        window.location.href = 'Index.html';
+    } else {
+        alert("Please enter a nickname and select your gender!");
+    }
+}
+</script>
+</style>
+</head>
+<body>
+    <div class="card">
+        <h2>Welcome ❤️</h2>
+        <div id="user-welcome" style="color: white; font-size: 14px; margin-top: 5px; opacity: 0.9;"></div>
+
+        <p>Create your account to find your Valentine</p>
+        <input type="text" id="nickname" placeholder="Your Nickname">
+
+<select id="gender" style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 25px; outline: none; background: white;">
+    <option value="" disabled selected>Select Gender</option>
+     style="color: white; font-size: 16px; font-weight: bold; margin-top: 5px;"></div>
+
+    <div  style="font-size: 14px; opacity: 0.9; margin-left: 10px;"></div>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+</select>
+<div id="user-welcome"...
+<button class="btn" onclick="saveAndJoin()">Start Chatting</button>
+<a href="Privacy.html" style="font-size: 11px; color: #666; display: block; margin-top: 15px; text-align: center; text-decoration: none;">Privacy Policy</a>
+
+   <script>
+// This checks the phone memory for the nickname you saved earlier
+const userNick = localStorage.getItem('user_nickname');
+if(userNick) {
+    document.getElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
+}
+</script>
+     
+
+    </div>
+</body><script>
+function saveAndJoin() {
+    const nick = document.getElementById('nickname').value;
+    const gen = document.getElementById('gender').value;
+
+    if(nick && gen) {
+        // This saves your choice to your phone's memory
+        localStorage.setItem('user_nickname', nick);
+        localStorage.setItem('user_gender', gen);
+        localStorage.setItem('user_joined', 'true');
+        
+        // This tells the app to move to the main screen
+        window.location.href = 'Index.html';
+    } else {
+        alert("Please enter a nickname and select your gender!");
+    }
+}
+</script>
+
+
+const userNick = localStorage.getItem('user_nickname');
+if(userNick) {
+    document.getElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
+}
+</script>
+
+</html>

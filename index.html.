@@ -1,4 +1,6 @@
-<!DOCTYPE html>.
+
+  
+  <!DOCTYPE html>.
 <script>if(!localStorage.getItem('user_joined')){window.location.href='signup.html'}</script>
 <html lang="en">
 <head>
@@ -157,12 +159,9 @@ if(userNick) {
     <script>
 const userNick = localStorage.getItem('user_nickname');
 if(userNick) {
-    document.getElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
+    document.gethe tElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
 }
 </script>
 
 </body>
-</html>  
-    
-  
-  
+  </html>

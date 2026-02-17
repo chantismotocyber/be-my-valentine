@@ -30,7 +30,8 @@ function saveAndJoin() {
 }
 </script>
 </style>
-</head>
+</head>script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <body>
     <div class="card">
         <h2>Welcome ❤️</h2>
@@ -61,18 +62,34 @@ if(userNick) {
      
 
     </div>
-</body><script>
+</body><script>const firebaseConfig = {
+  apiKey: "AIzaSyBFCiwdZh0o6HcwfifFViuXpzsb-KLIhoQ",
+  authDomain: "valentine-everyone.firebaseapp.com",
+  databaseURL: "https://valentine-everyone-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "valentine-everyone",
+  storageBucket: "valentine-everyone.appspot.com",
+  messagingSenderId: "664909683939",
+  appId: "1:664909683939:web:7be41f4198426c001bf9d6"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 function saveAndJoin() {
     const nick = document.getElementById('nickname').value;
     const gen = document.getElementById('gender').value;
 
     if(nick && gen) {
-        // This saves your choice to your phone's memory
+        // This sends the name to the CLOUD so everyone can see it!
+        firebase.database().ref('users/' + nick).set({
+            username: nick,
+            gender: gen,
+            status: "online"
+        });
+
+        // This still saves it to your phone memory
         localStorage.setItem('user_nickname', nick);
         localStorage.setItem('user_gender', gen);
         localStorage.setItem('user_joined', 'true');
-        
-        // This tells the app to move to the main screen
+
         window.location.href = 'index.html';
     } else {
         alert("Please enter a nickname and select your gender!");

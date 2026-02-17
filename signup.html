@@ -73,18 +73,12 @@ function saveAndJoin() {
         localStorage.setItem('user_joined', 'true');
         
         // This tells the app to move to the main screen
-        window.location.href = 'Index.html';
+        window.location.href = 'index.html';
     } else {
         alert("Please enter a nickname and select your gender!");
     }
 }
 </script>
 
-
-const userNick = localStorage.getItem('user_nickname');
-if(userNick) {
-    document.getElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
-}
-</script>
 
 </html>

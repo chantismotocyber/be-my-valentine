@@ -82,16 +82,7 @@ if(userNick) {
 </script>
 <p id="c-type" style="color:#ff8a80; font-size:18px;"></p>
         <div class="hangup" onclick="goChat()">📞</div>
-    </div>
-    <script>
-        var currentUser = null;
-        var listData = [
-            { id: 1, name: 'Sravya', img: 'https://randomuser.me/api/portraits/women/68.jpg', last: 'Namaskaram! Ela unnav?' },
-            { id: 2, name: 'Emily', img: 'https://randomuser.me/api/portraits/women/44.jpg', last: 'Hey there!' },
-            { id: 3, name: 'Karthik', img: 'https://randomuser.me/api/portraits/men/32.jpg', last: 'Match chustunnava bro?' }
-        ];
-        window.onload = function() {
-            var html = '';
+    
             for(var i=0; i<listData.length; i++) {
                 html += '<div class="item" onclick="startChat('+listData[i].id+')">' +
                         '<img src="'+listData[i].img+'" class="item-img">' +
@@ -156,12 +147,46 @@ if(userNick) {
             addMsg('<img src="'+src+'" class="thumb">', 'rcvd', true);
         }
     </script>
-    <script>
-const userNick = localStorage.getItem('user_nickname');
-if(userNick) {
-    document.gethe tElementById('user-welcome').innerText = "Hello, " + userNick + " ❤️";
+   <script>
+// 1. Your Firebase Bridge
+const firebaseConfig = {
+  apiKey: "AIzaSyBFCiwdZh0o6HcwfifFViuXpzsb-KLIhoQ",
+  authDomain: "valentine-everyone.firebaseapp.com",
+  databaseURL: "https://valentine-everyone-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "valentine-everyone",
+  storageBucket: "valentine-everyone.appspot.com",
+  messagingSenderId: "664909683939",
+  appId: "1:664909683939:web:7be41f4198426c001bf9d6"
+};
+
+// 2. Turn on the connection
+firebase.initializeApp(firebaseConfig);
+const userListRef = firebase.database().ref('users');
+
+// 3. This shows "Hello, [Your Name]" at the top
+const myNick = localStorage.getItem('user_nickname');
+if(myNick) {
+    document.getElementById('user-welcome').innerText = "Hello, " + myNick + " ❤️";
 }
-</script>
+
+// 4. This automatically lists EVERYONE who installs the app
+userListRef.on('value', (snapshot) => {
+    const users = snapshot.val();
+    const listElement = document.getElementById('inbox-list');
+    listElement.innerHTML = ''; 
+
+    for (let id in users) {
+        listElement.innerHTML += `
+            <div class="item" onclick="startChat('${users[id].username}')">
+                <div class="avatar-small"></div>
+                <div class="item-info">
+                    <div class="item-name">${users[id].username}</div>
+                    <div class="item-last">Online now! Tap to chat ❤️</div>
+                </div>
+            </div>`;
+    }
+});
+</script> 
 
 </body>
   </html>

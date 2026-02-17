@@ -14,20 +14,7 @@
     <script>
 function saveAndJoin() {
     const nick = document.getElementById('nickname').value;
-    const gen = document.getElementById('gender').value;
-
-    if(nick && gen) {
-        // Saves user info to the phone's memory
-        localStorage.setItem('user_nickname', nick);
-        localStorage.setItem('user_gender', gen);
-        localStorage.setItem('user_joined', 'true');
-        
-        // Takes the user to the main chat screen
-        window.location.href = 'Index.html';
-    } else {
-        alert("Please enter a nickname and select your gender!");
-    }
-}
+    const gen = document.getElemen
 </script>
 </style>
 </head>script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -49,7 +36,7 @@ function saveAndJoin() {
     <option value="Female">Female</option>
 </select>
 <div id="user-welcome"...
-<button class="btn" onclick="saveAndJoin()">Start Chatting</button>
+<button class="btn" onclick="saveAndJoin()">Start Chatting</button> <br><br>
 <a href="Privacy.html" style="font-size: 11px; color: #666; display: block; margin-top: 15px; text-align: center; text-decoration: none;">Privacy Policy</a>
 
    <script>
